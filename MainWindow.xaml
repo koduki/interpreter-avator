@@ -15,21 +15,19 @@
             <ColumnDefinition Width="47*"/>
             <ColumnDefinition Width="753*"/>
         </Grid.ColumnDefinitions>
-        <Image HorizontalAlignment="Left" Height="399" VerticalAlignment="Top" Width="402" Source="/avator01.png" Margin="354,185,0,0" Grid.Column="1"/>
-        <RichTextBox Grid.ColumnSpan="2" Margin="0,120,395,238">
+        <Image HorizontalAlignment="Left" Height="399" VerticalAlignment="Top" Width="402" Source="/avator01.png" Margin="345,201,0,0" Grid.Column="1"/>
+        <RichTextBox Margin="0,30,10,542" PreviewKeyDown="RichTextBox_PreviewKeyDown" Block.LineHeight="1" Grid.ColumnSpan="2"  AcceptsReturn="False">
             <FlowDocument>
                 <Paragraph>
-                    <Run Text="RichTextBox"/>
+                    <Run Text="test"/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <RichTextBox Margin="309,10,10,546" TextChanged="RichTextBox_TextChanged" Grid.Column="1">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="RichTextBox"/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <ListBox x:Name="chatBox" ScrollViewer.CanContentScroll="True"
+         VirtualizingPanel.ScrollUnit="Pixel" Grid.ColumnSpan="2" Margin="0,80,410,10" >
+   
+        </ListBox>
+
 
     </Grid>
 </Window>

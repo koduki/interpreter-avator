@@ -46,5 +46,36 @@ namespace ai_ui
         {
 
         }
+
+        private void RichTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var inputBox = sender as RichTextBox;
+                var textRange = new TextRange(inputBox.Document.ContentStart, inputBox.Document.ContentEnd);
+                var textContent = textRange.Text;
+                textRange.Text = "";
+
+                // Messageの作成
+                var msgBox = new RichTextBox();
+                msgBox.AppendText(textContent);
+                msgBox.Margin = new Thickness(5);
+                msgBox.IsReadOnly = true;
+                msgBox.Document.LineHeight = 1;
+
+                msgBox.Width = 320;
+
+                var lineCount = msgBox.Document.Blocks.Count;
+                msgBox.Height = lineCount * 20;
+
+                // メッセージをChatに追加
+                var listBoxItem = new ListBoxItem();
+                listBoxItem.Content = msgBox;
+                chatBox.Items.Add(listBoxItem);
+                chatBox.SelectedItem = chatBox.Items[chatBox.Items.Count - 1];
+                chatBox.ScrollIntoView(chatBox.SelectedItem);
+
+            }
+        }
     }
 }
