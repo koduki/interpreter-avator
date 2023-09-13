@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ai_ui
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -53,29 +46,69 @@ namespace ai_ui
             {
                 var inputBox = sender as RichTextBox;
                 var textRange = new TextRange(inputBox.Document.ContentStart, inputBox.Document.ContentEnd);
-                var textContent = textRange.Text;
+                var prompt = textRange.Text;
                 textRange.Text = "";
 
-                // Messageの作成
-                var msgBox = new RichTextBox();
-                msgBox.AppendText(textContent);
-                msgBox.Margin = new Thickness(5);
-                msgBox.IsReadOnly = true;
-                msgBox.Document.LineHeight = 1;
+                chat(prompt);
 
-                msgBox.Width = 320;
-
-                var lineCount = msgBox.Document.Blocks.Count;
-                msgBox.Height = lineCount * 20;
-
-                // メッセージをChatに追加
-                var listBoxItem = new ListBoxItem();
-                listBoxItem.Content = msgBox;
-                chatBox.Items.Add(listBoxItem);
                 chatBox.SelectedItem = chatBox.Items[chatBox.Items.Count - 1];
                 chatBox.ScrollIntoView(chatBox.SelectedItem);
+            }
+        }
+
+        private void chat(string prompt)
+        {
+            chatBox.Items.Add(makeMessage(prompt, true));
+
+            var repoonse = "あああああああ\nああああああああああああ\nああああああああああ\nあああああああああああああああああ\nあああああああああ\nあああああああああ\nあああああああああああ";
+            chatBox.Items.Add(makeMessage(repoonse, false));
+        }
+
+        private static ListBoxItem makeMessage(string textContent, bool isPrompt)
+        {
+            // Gridの作成
+            var mainGrid = new Grid();
+            mainGrid.RowDefinitions.Add(new RowDefinition());
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            mainGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+            // Messageの作成
+            var msgBox = new RichTextBox();
+            msgBox.AppendText(textContent);
+            msgBox.Margin = new Thickness(5);
+            msgBox.IsReadOnly = true;
+            msgBox.Document.LineHeight = 1;
+            msgBox.Width = 300;
+            var lineCount = msgBox.Document.Blocks.Count;
+            msgBox.Height = lineCount * 20;
+            mainGrid.Children.Add(msgBox);
+
+            if (isPrompt)
+            {
+                msgBox.Margin = new Thickness(48 + 25 + 5, 5, 5, 5);
+            }
+            else
+            {
+                // Icon
+                var faceIcon = new Image();
+                faceIcon.Height = 48;
+                faceIcon.Width = 48;
+                faceIcon.Margin = new Thickness(1);
+                faceIcon.Source = new BitmapImage(new Uri("pack://application:,,,/icon.png"));
+                mainGrid.Children.Add(faceIcon);
+
+                // Layoutにマップ
+                Grid.SetRow(faceIcon, 0);
+                Grid.SetColumn(faceIcon, 0);
+                Grid.SetRow(msgBox, 0);
+                Grid.SetColumn(msgBox, 1);
 
             }
+            // ListBoxItemを追加
+            var listBoxItem = new ListBoxItem();
+            listBoxItem.Content = mainGrid;
+
+            return listBoxItem;
         }
     }
 }
